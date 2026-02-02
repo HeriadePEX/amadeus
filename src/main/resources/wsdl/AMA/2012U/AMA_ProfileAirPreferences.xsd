@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 (http://www.altova.com) by AMADEUS SAS (AMADEUS SAS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.amadeus.com/2008/10/AMA/Profile" targetNamespace="http://xml.amadeus.com/2008/10/AMA/Profile" elementFormDefault="qualified" version="1.003" id="AMA2012U">
+  <xs:include schemaLocation="AMA_ProfileCommonPrefs.xsd" />
+  <xs:include schemaLocation="AMA_ProfileAirCommonTypes.xsd" />
+  <xs:annotation>
+    <xs:documentation xml:lang="en">Copyright 2011 Amadeus IT Group SA. All files in the Amadeus Web services specification are strictly confidential .They may not be reproduced in whole or in part without prior written permission  from Amadeus IT Group SA</xs:documentation>
+  </xs:annotation>
+  <xs:attributeGroup name="CabinPrefGroup">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Indicates preferences for choice of airline cabin.</xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="PreferLevelGroup" />
+    <xs:attribute name="Cabin">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Indicates preferred airline cabin.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="CabinType" />
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="DomesticIndicator" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Used to tell this cabin is preferred for domestic flights (origin and destination belong to the same country, connections are not considered)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="MinElapsedFlyingTime" type="xs:int" />
+    <xs:attribute name="MaxElapsedFlyingTime" type="xs:int" />
+  </xs:attributeGroup>
+  <xs:attributeGroup name="SeatPrefGroup">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Indicates preferences for seats or seat types.</xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="SeatRequestAttributes" />
+  </xs:attributeGroup>
+  <xs:attributeGroup name="SSR_PrefGroup">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Identifies preferences for special services required for air travel, using standard industry (SSR-OSI) code list.</xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="PreferLevelGroup" />
+    <xs:attribute name="SSR_Code" type="AlphaLength4" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Code of the special service request to be used for this air travel situation. Refers to standard industry code list.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="AirlineCode" type="StringLength1to16" use="optional">
+      <xs:annotation>
+        <xs:documentation>defines the airline that will provide the corresponding service.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="NumberInParty" type="StringLength0to8" use="optional">
+      <xs:annotation>
+        <xs:documentation>This is the number of passenger that will benefit from the Service Request.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="StatusCode" type="AlphaLength1to2">
+      <xs:annotation>
+        <xs:documentation>indicates the confirmation status from the airline (HK=confirmed, NO=rejected ...)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="SSR_FreeText" type="StringLength1to128">
+      <xs:annotation>
+        <xs:documentation>describes the service in a more detailed way</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="FlightIndicator">
+      <xs:annotation>
+        <xs:documentation>this code indicates the type of the flight (S=short haul, L=long haul, D=domestic, I=international)</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="OTA_CodeType">
+          <xs:enumeration value="1" />
+          <xs:enumeration value="2" />
+          <xs:enumeration value="3" />
+          <xs:enumeration value="4" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="ExplosionIndicator" type="AlphaLength1" use="optional">
+      <xs:annotation>
+        <xs:documentation>this code indicates the type of the flight (S=short haul, L=long haul, D=domestic, I=international)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="EncryptionKey" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="StringLength1to64">
+          <xs:maxLength value="35" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="SK_PrefGroup">
+    <xs:attribute name="Keyword" type="StringLength1to16" use="optional" />
+    <xs:attribute name="Provider" type="StringLength0to32" />
+    <xs:attribute name="StatusCode" type="StringLength2" use="optional" />
+    <xs:attribute name="NumberInParty" type="NumericStringLength1to3" use="optional" />
+    <xs:attribute name="Text" type="StringLength0to128" />
+  </xs:attributeGroup>
+  <xs:attributeGroup name="OS_PrefGroup">
+    <xs:attribute name="AirlineCode" type="StringLength1to16" />
+    <xs:attribute name="Text" type="StringLength0to128" />
+  </xs:attributeGroup>
+  <xs:complexType name="AirlinePrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Identifies a collection of preferences for airline travel.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="VendorPref" type="CompanyNamePrefType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Identifies the preferred airline carrier(s) by name.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PaymentFormPref" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="PaymentFormPrefType">
+              <xs:attribute name="PaymentTransactionTypeCode" use="optional">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">This is used to indicate either a charge or reserve (deposit).</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="xs:NMTOKEN">
+                    <xs:enumeration value="charge">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">This indicates that an actual payment has been made.</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="reserve">
+                      <xs:annotation>
+                        <xs:documentation xml:lang="en">This indicates that a hold for the indicated amount has been placed on a credit card or that a cash amount has been taken from the customer to guarantee final payment.</xs:documentation>
+                      </xs:annotation>
+                    </xs:enumeration>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+              <xs:attribute name="PaymentTypeCode" type="StringLength1to255" use="optional">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">Used to specify the method of guarantee. Refer to OTA Code List Payment Type (PMT).</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AirportOriginPref" type="AirportPrefType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Identifies the preferred origination airport for travel (using IATA airport codes).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AirportDestinationPref" type="AirportPrefType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Identifies the preferred destination airport for travel (using IATA airport codes).</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="FareElementsPref" type="FareElementsPrefType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="SeatPref" minOccurs="0" maxOccurs="100">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Indicates preferred seat characteristics.  Refer to OTA Code List Seat Preference (STP) for codes.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="SeatPreferences" minOccurs="0" maxOccurs="3">
+              <xs:simpleType>
+                <xs:restriction base="OTA_CodeType">
+                  <xs:enumeration value="3" />
+                  <xs:enumeration value="4" />
+                  <xs:enumeration value="5" />
+                  <xs:enumeration value="14" />
+                  <xs:enumeration value="15" />
+                  <xs:enumeration value="16" />
+                  <xs:enumeration value="17" />
+                  <xs:enumeration value="18" />
+                  <xs:enumeration value="19" />
+                  <xs:enumeration value="20" />
+                  <xs:enumeration value="21" />
+                  <xs:enumeration value="22" />
+                  <xs:enumeration value="23" />
+                  <xs:enumeration value="24" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attributeGroup ref="SeatPrefGroup" />
+          <xs:attribute name="AircraftType" type="xs:string" use="optional">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The type of the aircraft</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="Configuration" type="xs:string" use="optional">
+            <xs:annotation>
+              <xs:documentation>Indicates the saleable configuration</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="CabinType" use="optional">
+            <xs:annotation>
+              <xs:documentation>Indicates the preferred cabin.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string" />
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="FlightType">
+            <xs:simpleType>
+              <xs:restriction base="OTA_CodeType">
+                <xs:enumeration value="1" />
+                <xs:enumeration value="2" />
+                <xs:enumeration value="3" />
+                <xs:enumeration value="4" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="Provider" type="StringLength0to32" />
+          <xs:attributeGroup ref="TransfereToPNRGroup" />
+          <xs:attribute name="RPH" type="RPH_Type" use="optional">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="TicketingAccountInformation" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="GST_Details" minOccurs="0">
+              <xs:complexType>
+                <xs:attribute name="RecipientName" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="StringLength1to32">
+                      <xs:maxLength value="30" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="ABN_Number" use="optional">
+                  <xs:simpleType>
+                    <xs:restriction base="StringLength1to16">
+                      <xs:minLength value="11" />
+                      <xs:maxLength value="11" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="RecipientAddress">
+                  <xs:simpleType>
+                    <xs:restriction base="StringLength1to64">
+                      <xs:maxLength value="60" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="Number" type="StringLength0to32" />
+          <xs:attribute name="CostCenter" type="StringLength0to64" />
+          <xs:attribute name="CompanyNumber" type="StringLength0to32" />
+          <xs:attribute name="ClientReference" type="StringLength0to64" />
+          <xs:attributeGroup ref="TransfereToPNRGroup" />
+          <xs:attribute name="RPH" type="RPH_Type" use="optional" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="TicketingElementPref" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+          <xs:attribute name="Text" type="StringLength1to128" />
+          <xs:attribute name="Provider" type="StringLength0to32" />
+          <xs:attributeGroup ref="TransfereToPNRGroup" />
+          <xs:attribute name="RPH" type="RPH_Type">
+            <xs:annotation>
+              <xs:documentation>This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SSR_Pref" minOccurs="0" maxOccurs="100">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Indicates Special Service Request preference type.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="SSR_PrefGroup" />
+          <xs:attributeGroup ref="TransfereToPNRGroup" />
+          <xs:attribute name="RPH" type="RPH_Type" use="optional">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CabinPref" minOccurs="0" maxOccurs="100">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Indicates preferred cabin(s) to be used in a search.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="CabinPrefGroup" />
+          <xs:attribute name="RPH" type="RPH_Type">
+            <xs:annotation>
+              <xs:documentation>This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="TicketDistribPref" type="TicketDistribPrefType" minOccurs="0" />
+      <xs:element name="OS_Pref" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+          <xs:attributeGroup ref="OS_PrefGroup" />
+          <xs:attributeGroup ref="TransfereToPNRGroup" />
+          <xs:attribute name="RPH" type="RPH_Type" use="optional">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SK_Pref" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+          <xs:attributeGroup ref="SK_PrefGroup" />
+          <xs:attributeGroup ref="TransfereToPNRGroup" />
+          <xs:attribute name="RPH" type="RPH_Type">
+            <xs:annotation>
+              <xs:documentation>This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="TourCodePref" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+          <xs:choice>
+            <xs:element name="FormattedTourCode">
+              <xs:complexType>
+                <xs:attribute name="TourType" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="StringLength2">
+                      <xs:enumeration value="IT" />
+                      <xs:enumeration value="BT" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="Year" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="NumericStringLength1to3">
+                      <xs:minLength value="1" />
+                      <xs:maxLength value="1" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="Provider" type="StringLength2" use="required" />
+                <xs:attribute name="ApprovalCode" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="NumericStringLength1to3">
+                      <xs:minLength value="1" />
+                      <xs:maxLength value="1" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="PartyID" type="StringLength1to8" use="required" />
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="StaffTourCode">
+              <xs:complexType>
+                <xs:attribute name="Provider" type="StringLength2" use="required" />
+                <xs:attribute name="StaffType" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="AlphaLength1">
+                      <xs:enumeration value="C" />
+                      <xs:enumeration value="D" />
+                      <xs:enumeration value="R" />
+                      <xs:enumeration value="T" />
+                      <xs:enumeration value="S" />
+                      <xs:enumeration value="M" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="StaffNumber" type="StringLength0to32" use="optional" />
+                <xs:attribute name="RelativeNumber" use="optional">
+                  <xs:simpleType>
+                    <xs:restriction base="NumericStringLength1to3">
+                      <xs:minLength value="1" />
+                      <xs:maxLength value="2" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="FreeFlowTourCode">
+              <xs:complexType>
+                <xs:attribute name="Type" use="required">
+                  <xs:simpleType>
+                    <xs:restriction base="StringLength2">
+                      <xs:enumeration value="NR" />
+                      <xs:enumeration value="FF" />
+                      <xs:enumeration value="OT" />
+                    </xs:restriction>
+                  </xs:simpleType>
+                </xs:attribute>
+                <xs:attribute name="FreeText" type="StringLength1to128" use="required" />
+              </xs:complexType>
+            </xs:element>
+          </xs:choice>
+          <xs:attribute name="TourCodeTransaction">
+            <xs:simpleType>
+              <xs:restriction base="StringLength3">
+                <xs:enumeration value="PAX" />
+                <xs:enumeration value="INF" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="Provider" type="StringLength0to32" />
+          <xs:attributeGroup ref="TransfereToPNRGroup" />
+          <xs:attribute name="RPH" type="RPH_Type" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="AdditionalInformation" minOccurs="0">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="StringLength0to128">
+              <xs:attribute name="InformationType" type="OTA_CodeType" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="EquipPref" type="EquipmentTypePref" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Indicates preferred equipment type(s) to be used in a search.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="RateRangePref" type="RateRangePrefType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="BookingClassPref" minOccurs="0" maxOccurs="5">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Specifies specific booking classes to include and/or exclude in the response.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="BookingClassPrefGroup">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Specifies a booking class to be included or excluded in the response.</xs:documentation>
+            </xs:annotation>
+          </xs:attributeGroup>
+          <xs:attribute name="RPH" type="RPH_Type">
+            <xs:annotation>
+              <xs:documentation>This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="FlightSegmentPref" minOccurs="0" maxOccurs="100">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A container for necessary data to describe one or more legs of a single flight number.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="BookFlightSegmentType">
+              <xs:attribute name="SegmentType" use="required">
+                <xs:simpleType>
+                  <xs:restriction base="StringLength2">
+                    <xs:enumeration value="SO" />
+                    <xs:enumeration value="SS" />
+                    <xs:enumeration value="SI" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+              <xs:attribute name="ActionCode" type="StringLength1to8" />
+              <xs:attribute name="PassengerAges" type="StringLength1to32" />
+              <xs:attribute name="TransferIndicator">
+                <xs:simpleType>
+                  <xs:restriction base="AlphaLength1">
+                    <xs:enumeration value="M" />
+                    <xs:enumeration value="S" />
+                    <xs:enumeration value="A" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+              <xs:attribute name="RPH" type="RPH_Type" use="optional">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">This is a reference placeholder.</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="TransferAction">
+                <xs:simpleType>
+                  <xs:restriction base="AlphaLength1">
+                    <xs:enumeration value="M" />
+                    <xs:enumeration value="S" />
+                    <xs:enumeration value="A" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="MealPref" type="MealPrefType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Indicates preferred meal type (e.g., vegetarian, Kosher, low fat)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="PassengerTypeCode" type="AlphaNumericStringLength3" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Category of airline passenger, using standard ATPCO codes.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="SmokingIndicatorGroup" />
+    <xs:attribute name="RPH" type="RPH_Type" use="optional">
+      <xs:annotation>
+        <xs:documentation>This is a reference placeholder.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="AirportPrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Departure airport preferences, using IATA airport codes.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="LocationType" />
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="EquipmentTypePref">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Indicates preferences for type of airplane.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="EquipmentType">
+        <xs:attributeGroup ref="PreferLevelGroup" />
+        <xs:attribute name="WideBody" type="xs:boolean" use="optional">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Indicates if an airplane with multiple aisles is preferred.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Aircraft" type="StringLength1to8">
+          <xs:annotation>
+            <xs:documentation>Preferred aircraft. eg. 747, A380...</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="RPH" type="RPH_Type">
+          <xs:annotation>
+            <xs:documentation>This is a reference placeholder.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>
+

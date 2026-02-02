@@ -1,0 +1,91 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.0.2'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.kalixys.amadeus'
+version = '0.0.1-SNAPSHOT'
+description = 'amadeus'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    wsimport
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-restclient'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    implementation 'org.springframework.boot:spring-boot-starter-webservices'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.5'
+    implementation 'com.sun.xml.messaging.saaj:saaj-impl:3.0.4'
+    wsimport 'com.sun.xml.ws:jaxws-tools:4.0.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webservices-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+def wsdlDir = file('src/main/resources/wsdl')
+def generatedDir = file("$buildDir/generated-sources/wsimport")
+
+tasks.register('wsimportDistributionProfileAccess', JavaExec) {
+    classpath = configurations.wsimport
+    mainClass = 'com.sun.tools.ws.WsImport'
+    args = [
+        '-s', generatedDir,
+        '-d', generatedDir,
+        '-Xnocompile',
+        '-extension',
+        new File(wsdlDir, '1ASIWPROG8T_PDT_DistributionProfileAccess_12.2_4.0.wsdl').path
+    ]
+    doFirst {
+        generatedDir.mkdirs()
+    }
+}
+
+tasks.register('wsimportAmadeusWebServices', JavaExec) {
+    classpath = configurations.wsimport
+    mainClass = 'com.sun.tools.ws.WsImport'
+    args = [
+        '-s', generatedDir,
+        '-d', generatedDir,
+        '-Xnocompile',
+        '-extension',
+        new File(wsdlDir, '1ASIWPROG8T_PDT_20260131_163804.wsdl').path
+    ]
+    doFirst {
+        generatedDir.mkdirs()
+    }
+}
+
+tasks.register('wsimport') {
+    dependsOn 'wsimportDistributionProfileAccess', 'wsimportAmadeusWebServices'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir generatedDir
+        }
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn tasks.named('wsimport')
+}

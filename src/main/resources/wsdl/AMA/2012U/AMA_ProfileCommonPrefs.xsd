@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 (http://www.altova.com) by AMADEUS SAS (AMADEUS SAS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ama="http://xml.amadeus.com/2010/06/Types_v2" xmlns="http://xml.amadeus.com/2008/10/AMA/Profile" targetNamespace="http://xml.amadeus.com/2008/10/AMA/Profile" elementFormDefault="qualified" version="1.003" id="AMA2012U">
+  <xs:include schemaLocation="AMA_ProfileCommonTypes.xsd" />
+  <xs:import namespace="http://xml.amadeus.com/2010/06/Types_v2" schemaLocation="AMA_CommonTypes_Proxy.xsd" />
+  <xs:annotation>
+    <xs:documentation xml:lang="en">Copyright 2011 Amadeus IT Group SA. All files in the Amadeus Web services specification are strictly confidential .They may not be reproduced in whole or in part without prior written permission  from Amadeus IT Group SA</xs:documentation>
+  </xs:annotation>
+  <xs:complexType name="AddressPrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Identifies an address preference.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Context" type="StringLength1to32" />
+    <xs:attribute name="RPH" type="RPH_Type" />
+    <xs:attribute name="PreferLevel" type="PreferLevelType" use="optional" default="Preferred">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Used to indicate a level of preference for an associated item.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="DocumentPrefType">
+    <xs:attribute name="PreferLevel" type="PreferLevelType" use="optional" default="Preferred">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Used to indicate a level of preference for an associated item.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="RPH" type="RPH_Type" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Identification of loyalty program by reference number or index.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="OtherSrvcPrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Other travel service preferences.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="IndividualPNRSecurity" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Receiver" type="StringLength1to16" minOccurs="0" maxOccurs="5" />
+            <xs:element name="AccessMod" type="StringLength1to16" minOccurs="0" maxOccurs="5" />
+          </xs:sequence>
+          <xs:attribute name="ReceiverType" type="OTA_CodeType" />
+          <xs:attribute name="RPH" type="RPH_Type" />
+          <xs:attributeGroup ref="TransfereToPNRGroup" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="LoyaltyPrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Identifies a preference for a loyalty program.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="StringLength0to64">
+        <xs:attributeGroup ref="PreferLevelGroup">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Used to specify the preference level for this loyalty program.</xs:documentation>
+          </xs:annotation>
+        </xs:attributeGroup>
+        <xs:attribute name="RPH" type="RPH_Type">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Identification of loyalty program by reference number or index.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="CompanyNamePrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Identifies a preferred company by name.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="CompanyNameType">
+        <xs:attributeGroup ref="PreferLevelGroup" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="TicketDistribPrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Type of ticket distribution to be used with this collection of preferences.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="StringLength0to64">
+        <xs:attribute name="Text">
+          <xs:simpleType>
+            <xs:restriction base="StringLength1to64">
+              <xs:maxLength value="40" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attributeGroup ref="PreferLevelGroup" />
+        <xs:attribute name="DistribType">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Ticket distribution method such as Fax, Email, Courier, Mail, Airport_Pickup, City_Office, Hotel_Desk,
+ WillCall, etc. Refer to OTA Code List Distribution Type (DTB).</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="OTA_CodeType">
+              <xs:enumeration value="HA" />
+              <xs:enumeration value="XM" />
+              <xs:enumeration value="RM" />
+              <xs:enumeration value="ET" />
+              <xs:enumeration value="TP" />
+              <xs:enumeration value="AP" />
+              <xs:enumeration value="CP" />
+              <xs:enumeration value="FX" />
+              <xs:enumeration value="EM" />
+              <xs:enumeration value="PH" />
+              <xs:enumeration value="AN" />
+              <xs:enumeration value="SM" />
+              <xs:enumeration value="TR" />
+              <xs:enumeration value="ACC" />
+              <xs:enumeration value="PIC" />
+              <xs:enumeration value="TIC" />
+              <xs:enumeration value="TKL" />
+              <xs:enumeration value="OTK" />
+              <xs:enumeration value="DEL" />
+              <xs:enumeration value="CER" />
+              <xs:enumeration value="MSG" />
+              <xs:enumeration value="NLT" />
+              <xs:enumeration value="NON" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="Remark" type="StringLength1to128" use="optional">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">A remark associated with the ticket distribution preference.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="MailServiceType" type="StringLength1to8" />
+        <xs:attribute name="Provider" type="StringLength0to128">
+          <xs:annotation>
+            <xs:documentation>Providers to which the preference delivery applies.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="RPH" type="RPH_Type" use="optional">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">This is a reference placeholder.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="CommonPrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Travel needs associated with a collection but independent of specific travel services.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="AddressPref" type="AddressPrefType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Enables a preference to be indicated for address information.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TicketDistribPref" type="TicketDistribPrefType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="ContactPref" type="TicketDistribPrefType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="TravelManagementPref" minOccurs="0" maxOccurs="10">
+        <xs:complexType>
+          <xs:attributeGroup ref="CodeGroup" />
+          <xs:attributeGroup ref="DefaultIndGroup" />
+          <xs:attribute name="NumberOfTraveller" type="AlphaNumericStringLength1to8" />
+          <xs:attribute name="ServiceLevelAgreement" type="StringLength0to8" />
+          <xs:attribute name="RPH" type="RPH_Type" use="optional">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DocumentPref" type="DocumentPrefType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="PassengerTypePref" type="AdditionalPassengerTypePrefType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="FormOfIdentification" minOccurs="0" maxOccurs="10">
+        <xs:complexType>
+          <xs:attribute name="Type">
+            <xs:annotation>
+              <xs:documentation>Type of the identification document (Driving Licence...)</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="StringLength1to64">
+                <xs:enumeration value="DriverLicense" />
+                <xs:enumeration value="NationalID" />
+                <xs:enumeration value="CreditCard" />
+                <xs:enumeration value="FFCard" />
+                <xs:enumeration value="Passport" />
+                <xs:enumeration value="Membership" />
+                <xs:enumeration value="Other" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="Description" type="StringLength1to128" />
+          <xs:attribute name="TravelSector" type="OTA_CodeType" use="optional">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Identifies the travel sector. Refer to OTA Code List Travel Sector (TVS).</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="RPH" type="RPH_Type" use="optional">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Identification of FOID by reference number or index.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="PaymentFormPrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Form(s) of payment to be used with this collection of preferences.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="StringLength0to64">
+        <xs:attribute name="RPH" type="RPH_Type" use="optional" />
+        <xs:attribute name="CodeContext" use="optional">
+          <xs:simpleType>
+            <xs:restriction base="StringLength1to32">
+              <xs:enumeration value="TicketPayment" />
+              <xs:enumeration value="LCC" />
+              <xs:enumeration value="CallMe" />
+              <xs:enumeration value="ACC" />
+              <xs:enumeration value="InvoiceCorporation" />
+              <xs:enumeration value="CreditCard" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="SearchPrefType">
+    <xs:simpleContent>
+      <xs:extension base="StringLength0to64">
+        <xs:attribute name="SearchParameter" type="StringLength1to64" />
+        <xs:attribute name="TravelSector" type="OTA_CodeType" use="optional">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Identifies the travel sector. Refer to OTA Code List Travel Sector (TVS).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="UserPrefType">
+    <xs:sequence>
+      <xs:element name="SearchPref" type="SearchPrefType" minOccurs="0" maxOccurs="100" />
+    </xs:sequence>
+    <xs:attribute name="RPH" type="RPH_Type" use="optional">
+      <xs:annotation>
+        <xs:documentation>This is a reference placeholder.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="AdditionalPassengerTypePrefType">
+    <xs:attribute name="PassengerTypeCode" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Category of airline passenger, using standard ATPCO codes.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="AlphaLength3">
+          <xs:enumeration value="ADT" />
+          <xs:enumeration value="GVT" />
+          <xs:enumeration value="MIL" />
+          <xs:enumeration value="STU" />
+          <xs:enumeration value="YCD" />
+          <xs:enumeration value="YTH" />
+          <xs:enumeration value="SEA" />
+          <xs:enumeration value="DOD" />
+          <xs:enumeration value="BLD" />
+          <xs:enumeration value="DIS" />
+          <xs:enumeration value="CNV" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="RPH" type="RPH_Type" use="optional" />
+    <xs:attribute name="TravelSector" type="OTA_CodeType" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Identifies the travel sector. Refer to OTA Code List Travel Sector (TVS).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="MealPrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Identifies a food and beverage preference.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="StringLength0to64">
+        <xs:attributeGroup ref="PreferLevelGroup">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Used to specify the preference level for a meal type.</xs:documentation>
+          </xs:annotation>
+        </xs:attributeGroup>
+        <xs:attribute name="MealType" type="MealType">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Type of meal required (e.g.,vegetarian, Kosher, low fat, etc.)</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="FavoriteFood" type="StringLength1to64">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Dining preferences used with this collection.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Beverage" type="StringLength1to64">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Type of drink(s) preferred.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="RPH" type="RPH_Type">
+          <xs:annotation>
+            <xs:documentation>This is a reference placeholder.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="FareElementsPrefType">
+    <xs:sequence>
+      <xs:element name="Route" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Origin" type="LocationType" minOccurs="0" maxOccurs="100" />
+            <xs:element name="Destination" type="LocationType" minOccurs="0" maxOccurs="100" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Code" type="StringLength1to8" />
+    <xs:attribute name="Text" type="StringLength1to128" />
+    <xs:attribute name="Provider" type="StringLength0to32" />
+    <xs:attributeGroup ref="TransfereToPNRGroup" />
+    <xs:attributeGroup ref="PromotionCodeGroup" />
+    <xs:attribute name="TravelIdentifier">
+      <xs:simpleType>
+        <xs:restriction base="StringLength1to32">
+          <xs:enumeration value="PTP" />
+          <xs:enumeration value="TPC" />
+          <xs:enumeration value="MEP" />
+          <xs:enumeration value="MFE" />
+          <xs:enumeration value="RPFM" />
+          <xs:enumeration value="RPDOM" />
+          <xs:enumeration value="RPDOFM" />
+          <xs:enumeration value="NOCARD" />
+          <xs:enumeration value="EV" />
+          <xs:enumeration value="RP" />
+          <xs:enumeration value="RPAX" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="ExpireDate" type="xs:date" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Indicates the ending date.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="FareType" type="StringLength1to32" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Indicates the ending date.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="TarificationMode" type="StringLength1to32" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Indicates the tarification mode.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="IssueDate" type="xs:date" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Indicates the issue date.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="RPH" type="RPH_Type" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">This is a reference placeholder.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="TriggerContext" type="ama:CodePatternType">
+      <xs:annotation>
+        <xs:documentation>Option of fare discount element used for APU/RAPU process. Refer to Frequent Flyer Trigger Context (FFTC) codeset list</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="RateRangePrefType">
+    <xs:annotation>
+      <xs:documentation>Indicated preferences for hotel rate range</xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="RateRangeGroup" />
+    <xs:attribute name="RPH" type="RPH_Type">
+      <xs:annotation>
+        <xs:documentation>This is a reference placeholder.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+</xs:schema>
+

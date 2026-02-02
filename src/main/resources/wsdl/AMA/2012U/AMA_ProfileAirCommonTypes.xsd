@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 (http://www.altova.com) by Amadeus s.a.s. (Amadeus s.a.s.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.amadeus.com/2008/10/AMA/Profile" targetNamespace="http://xml.amadeus.com/2008/10/AMA/Profile" elementFormDefault="qualified" version="1.003" id="AMA2012U">
+  <xs:include schemaLocation="AMA_ProfileCommonTypes.xsd" />
+  <xs:annotation>
+    <xs:documentation xml:lang="en">Copyright 2011 Amadeus IT Group SA. All files in the Amadeus Web services specification are strictly confidential .They may not be reproduced in whole or in part without prior written permission  from Amadeus IT Group SA</xs:documentation>
+  </xs:annotation>
+  <xs:attributeGroup name="BookingClassPrefGroup">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Booking class code and preference level for specifying booking classes preferred/not preferred in a request.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="ResBookDesigCode" type="UpperCaseAlphaLength1to2" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Booking class code</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="PreferLevelGroup">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The preference level for the booking class.</xs:documentation>
+      </xs:annotation>
+    </xs:attributeGroup>
+    <xs:attribute name="ResBookDesigCodeType" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">To specify the types of RBD's (Res Book Desig Codes) that should be returned as opposed to a specific RBD.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="Displayable">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Only return displayable RBDs.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="NonDisplayable">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Only return non-displayable RBD's.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="All">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Return all RBD's, displayable and non-displayable.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="CodeListAirGroup">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Used to specify a code and its associated attributes; meaning is derived from actual use (plus SecondaryCode and SupplierCode).</xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="CodeListGroup" />
+    <xs:attribute name="SecondaryCode" type="StringLength1to16" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">An additional attribute to allow flexibility for particular organizations who require an additional code.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="SupplierCode" type="UpperCaseAlphaLength1to3" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">An additional attribute to allow flexibility for particular organizations who require an additional supplier code.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="DiscountPricingGroup">
+    <xs:annotation>
+      <xs:documentation>The information needed for applying a discount to a fare.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="Purpose" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Used to specify the purpose of the discount pricing.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="Airline">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The discount pricing is from the airline.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Custom">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The discount pricing is a custom discount.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="Type" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Specifies the type of amount being sent.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="Amount">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The discount is an amount.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Percent">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The discount is a percentage.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="PlusUpAmount">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">A discount on an international fare that is not a stored fare.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="Usage" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Used to specify how the discount is to be applied.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="xs:NMTOKEN">
+          <xs:enumeration value="Plus">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The discount being applied is an increase to the fare.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Minus">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The discount being applied is subtracted from the fare.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="Discount" type="MoneyOrPercentageType" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The monetary amount or percentage of discount that should be applied.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="TicketDesignatorCode" type="StringLength1to16" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Specifies the code applicable to the fare that is being discounted.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Text" type="StringLength1to128" use="optional" />
+  </xs:attributeGroup>
+  <xs:attributeGroup name="PriceRequestAttributes">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Attribute collection used to describe a price request.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="FareQualifier" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Used to specify the type of fare required. Refer to OTA Code List Fare Qualifier (FAQ) or use airline industry standard fare codes.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:union memberTypes="OTA_CodeType UpperCaseAlphaLength1to3" />
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="NegotiatedFaresOnly" type="xs:boolean" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Indicator to identify whether or not the price is applicable only to private fares.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="CurrencyCode" type="AlphaLength3" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Type of funds preferred for reviewing monetary values, in ISO 4217 codes.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Reprice" type="xs:boolean" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">If true repricing is requested.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ValidatingAirlineCode" type="AlphaNumericStringLength1to8" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The code for the validating airline.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="RequestedTicketingDate" type="DateOrDateTimeType" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The date on which the customer requests the booking to be ticketed.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="SaleCountry" type="ISO3166" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The country in which the booking will be made (sold).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:complexType name="PriceRequestInformationType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Identify pricing source, if negotiated fares are requested and if it is a reprice request.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="NegotiatedFareCode" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Contains negotiated fare code information.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attributeGroup ref="CodeListAirGroup">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">Contains code information for a negotiated fare.</xs:documentation>
+                </xs:annotation>
+              </xs:attributeGroup>
+              <xs:attribute name="TicketDesignatorCode" type="StringLength1to16" use="optional">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">The ticket designator code for this negotiated fare code.</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="OverrideRuleInd" type="xs:boolean" use="optional">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">When true, the rules for the negotiated fare should not be applied.</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="TravelSector" use="optional">
+                <xs:annotation>
+                  <xs:documentation xml:lang="en">Identifies the travel sector. Refer to OTA Code List Travel Sector (TVS).</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                  <xs:restriction base="OTA_CodeType">
+                    <xs:enumeration value="1" />
+                    <xs:enumeration value="2" />
+                    <xs:enumeration value="3" />
+                    <xs:enumeration value="7" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:attribute>
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="PriceRequestAttributes">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Used to describe a price request.</xs:documentation>
+      </xs:annotation>
+    </xs:attributeGroup>
+    <xs:attribute name="CabinType" type="CabinType" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Identifies the type of cabin (i.e., first, business, economy) requested.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="TicketingCountry" type="ISO3166" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The ISO country code where the ticket will be issued.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="OverrideAirlineCode" type="AlphaNumericStringLength1to8" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The airline which should be used to override the system selected pricing airline.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="RPH" type="RPH_Type" use="optional">
+      <xs:annotation>
+        <xs:documentation>This is a reference placeholder.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="TravelSector">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Identifies the travel sector. Refer to OTA Code List Travel Sector (TVS).</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="OTA_CodeType">
+          <xs:enumeration value="1" />
+          <xs:enumeration value="2" />
+          <xs:enumeration value="3" />
+          <xs:enumeration value="7" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="TravelerInfoSummaryType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Specify passenger numbers and types</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SeatsRequested" type="xs:nonNegativeInteger" minOccurs="0" maxOccurs="99">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Number of seats requested.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="PriceRequestInformation" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Identifies pricing source, if negotiated fares are requested and if it is a reprice request.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="PriceRequestInformationType">
+              <xs:sequence>
+                <xs:element name="DiscountPricing" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation xml:lang="en">The information needed when a passenger presents a discount/promotional coupon for a dollar/percentage of the fare or when a passenger qualifies for a percentage discount such as a senior discount.</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="FlightReference" minOccurs="0" maxOccurs="16">
+                        <xs:annotation>
+                          <xs:documentation>Specifies a flight to which the discount pricing applies.</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                          <xs:attribute name="FlightRefNumber" type="StringLength1to64" use="required">
+                            <xs:annotation>
+                              <xs:documentation xml:lang="en">The flight segment to which the discount pricing should be applied.</xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                        </xs:complexType>
+                      </xs:element>
+                    </xs:sequence>
+                    <xs:attributeGroup ref="DiscountPricingGroup" />
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

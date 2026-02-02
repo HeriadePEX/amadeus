@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 (http://www.altova.com) by AMADEUS SAS (AMADEUS SAS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.amadeus.com/2008/10/AMA/Profile" targetNamespace="http://xml.amadeus.com/2008/10/AMA/Profile" elementFormDefault="qualified" version="1.003" id="AMA2012U">
+  <xs:include schemaLocation="AMA_ProfileCommonPrefs.xsd" />
+  <xs:annotation>
+    <xs:documentation xml:lang="en">Copyright 2011 Amadeus IT Group SA. All files in the Amadeus Web services specification are strictly confidential .They may not be reproduced in whole or in part without prior written permission  from Amadeus IT Group SA</xs:documentation>
+  </xs:annotation>
+  <xs:attributeGroup name="CoverageCoreGroup">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The CoverageCoreType complex type defines the required and most often used components that together define a specific Vehicle Coverage.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="CoverageType" type="OTA_CodeType" use="required">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Identifies the type of coverage, for example, collision damage waiver.  Refer to OTA Code List Vehicle Coverage Type (VCT).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Code" type="StringLength1to8" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Allows for an industry-specific code that describes this coverage to be specified, for example, CDW may be indicated when the coverage type is Collision Damage Waiver.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="VehicleCoveragePrefGroup">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The VehicleCoveragePrefType complex type defines a preference for a particular type of insurance coverage for a rental vehicle.  The preference is expressed using the attribute group PreferLevelType.</xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="CoverageCoreGroup" />
+    <xs:attributeGroup ref="PreferLevelGroup" />
+  </xs:attributeGroup>
+  <xs:attributeGroup name="VehicleEquipmentCoreGroup">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The VehicleEquipmentCoreType complex type identifies the core data that descrbes a piece of special equipment in association with the renting of a vehicle.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="EquipType" type="OTA_CodeType" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Identifies the specific type of special equipment.  Refer to OTA Code List Equipment Type (EQP).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Quantity" type="xs:positiveInteger" use="optional" />
+  </xs:attributeGroup>
+  <xs:attributeGroup name="VehicleEquipmentPrefGroup">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The VehicleEquipmentPrefType complex type identifies the data that is used to provide information on a preferred special equipment when renting a vehicle.</xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="VehicleEquipmentCoreGroup" />
+    <xs:attribute name="PreferLevel" type="xs:positiveInteger" use="optional" />
+    <xs:attribute name="Action" type="ActionType" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Identifes an action to take place. Typically used to modify the EquipType and/or Quantity.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:complexType name="VehiclePrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The VehiclePrefType complex type defines the information that is used when defining a preference of a vehicle.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="VehicleCoreType">
+        <xs:attribute name="AirConditionPref" type="PreferLevelType" use="optional" />
+        <xs:attribute name="TransmissionPref" type="PreferLevelType" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VehicleProfileRentalPrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Vehicle rental preferences can be specified for customers or companies to indicate their preferences for types of vehicles to be rented in specific travel situations. Companies may wish to specify certain class or types of cars that their employees are allowed to rent, or indicate special business needs for trucks for hauling goods, etc. Personal travelers may wish to indicate preferences for types of vehicles such as vans or SUVs for family vacations, or smaller, more sporty models when travelling alone. A customer may prefer to have a convertible or sun roof in a warm destination, but request a ski rack when vacationing in the wintertime.   The VehicleProfileRentalPrefType complex type has elements for specific features on rental cars including vehicle type (major category such as car, truck, SUV) and vehicle class (more precise kind of vehicle), air conditioning, transmission, and special equipment. In addition, the specification captures preferences for vendors and loyalty programs, insurance coverage, forms of payment for rental cars, and other special requirements.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="VendorPref" type="CompanyNamePrefType" minOccurs="0" maxOccurs="20">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Vendor Preferences indicates a preference for a specific car rental agency when used in a travel collection. The VendorPref element uses the Company Name entity to identify the preferred company by name and by vendor code.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="VehTypePref" type="VehiclePrefType" minOccurs="0" maxOccurs="10">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">The vehicle type preference element allows the customer to designate a major category of vehicle preferred for rental.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="SpecialEquipPref" minOccurs="0" maxOccurs="15">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Indicates a preference for special equipment in a rented car.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="VehicleEquipmentPrefGroup" />
+          <xs:attribute name="RPH" type="RPH_Type">
+            <xs:annotation>
+              <xs:documentation>This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="RateQualifierPref" type="RatesType" minOccurs="0" />
+      <xs:element name="FarePref" type="FareElementsPrefType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="AdditionalInformation" minOccurs="0" maxOccurs="10">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="StringLength0to128">
+              <xs:attribute name="InformationType" type="OTA_CodeType" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PaymentFormPref" minOccurs="0" maxOccurs="10">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">A preference for a payment indicates a specific type of payment, such as a credit card or direct bill, to be assigned to the car rental preference collection. The RPH (Reference Place Holder) attribute designates a specific payment form in a collection stored in the profile.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="RPH_PrefGroup" />
+          <xs:attribute name="PaymentTransactionTypeCode" use="optional">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">This is used to indicate either a charge or reserve (deposit).</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:NMTOKEN">
+                <xs:enumeration value="charge">
+                  <xs:annotation>
+                    <xs:documentation xml:lang="en">This indicates that an actual payment has been made.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+                <xs:enumeration value="reserve">
+                  <xs:annotation>
+                    <xs:documentation xml:lang="en">This indicates that a hold for the indicated amount has been placed on a credit card or that a cash amount has been taken from the customer to guarantee final payment.</xs:documentation>
+                  </xs:annotation>
+                </xs:enumeration>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="PaymentTypeCode" type="OTA_CodeType" use="optional">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Used to specify the method of guarantee. Refer to OTA Code List Payment Type (PMT).</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="LoyaltyPref" type="LoyaltyPrefType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attributeGroup ref="SmokingIndicatorGroup" />
+    <xs:attribute name="RPH" type="RPH_Type" use="optional">
+      <xs:annotation>
+        <xs:documentation>This is a reference placeholder.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="VehicleSpecialReqPrefType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The VehicleSpecialReqPrefType complex type defines a preference for a particular special request.  The preference is expressed using the attribute group PreferLevelType.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="StringLength1to255">
+        <xs:attributeGroup ref="PreferLevelGroup" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="VehicleEquipmentType">
+    <xs:attributeGroup ref="VehicleEquipmentPrefGroup" />
+  </xs:complexType>
+</xs:schema>
+

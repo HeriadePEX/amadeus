@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 (http://www.altova.com) by AMADEUS SAS (AMADEUS SAS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.amadeus.com/2008/10/AMA/Profile" targetNamespace="http://xml.amadeus.com/2008/10/AMA/Profile" elementFormDefault="qualified" version="2.005" id="AMA2012U">
+  <xs:include schemaLocation="AMA_Profile.xsd" />
+  <xs:annotation>
+    <xs:documentation xml:lang="en">Copyright 2011 Amadeus IT Group SA. All files in the Amadeus Web services specification are strictly confidential .They may not be reproduced in whole or in part without prior written permission  from Amadeus IT Group SA</xs:documentation>
+  </xs:annotation>
+  <xs:element name="AMA_ProfileReadRS">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Returns a single or multiple customer profile(s) in response to a ReadRQ request of Type=Profile.</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element name="Success" type="SuccessType">
+            <xs:annotation>
+              <xs:documentation xml:lang="en-us">Standard way to indicate successful processing of an OTA message.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="UniqueID" type="UniqueID_Type" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation xml:lang="en-us">An identifier used to uniquely reference an object in a system (e.g. an airline reservation reference, customer profile reference, booking confirmation number, or a reference to a previous availability quote).</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Profiles" type="ProfilesType">
+            <xs:annotation>
+              <xs:documentation xml:lang="en-us">Container element for a  collect of profiles.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="Warnings" type="WarningsType" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation xml:lang="en-us">A successfully processed of an AMA message, but one in which warnings are generated.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:element name="Errors" type="ErrorsType">
+          <xs:annotation>
+            <xs:documentation xml:lang="en-us">Standard way to indicate that an error occurred during the processing of an OTA message.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+      </xs:choice>
+      <xs:attributeGroup ref="OTA_PayloadStdAttributes" />
+      <xs:attributeGroup ref="ResponseGroup">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Used to indicate a maximum number of items desired in the list response message or when used for subsequent retrievals of additional data the MoreDataEchoToken determines where to continue the list.</xs:documentation>
+        </xs:annotation>
+      </xs:attributeGroup>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+

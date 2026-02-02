@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 (http://www.altova.com) by Amadeus s.a.s. (Amadeus s.a.s.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.amadeus.com/2008/10/AMA/Profile" targetNamespace="http://xml.amadeus.com/2008/10/AMA/Profile" elementFormDefault="qualified" version="1.003" id="AMA2012U">
+  <xs:include schemaLocation="AMA_ProfileCommonPrefs.xsd" />
+  <xs:annotation>
+    <xs:documentation xml:lang="en">Copyright 2011 Amadeus IT Group SA. All files in the Amadeus Web services specification are strictly confidential .They may not be reproduced in whole or in part without prior written permission  from Amadeus IT Group SA</xs:documentation>
+  </xs:annotation>
+  <xs:complexType name="CommunityType">
+    <xs:annotation>
+      <xs:documentation>Defines all community type that apply on the community of the company</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Settings" type="SettingsType" minOccurs="0" />
+    </xs:sequence>
+    <xs:attribute name="Type" type="StringLength1to32" use="required">
+      <xs:annotation>
+        <xs:documentation>Specify the community type such as Corporation,CorporationDivision</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="PSmode" type="StringLength1to16" use="optional">
+      <xs:annotation>
+        <xs:documentation>Type of Profile structure used in the community</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="SupersetID" type="xs:int">
+      <xs:annotation>
+        <xs:documentation>The supersetID of the community, only for Corporations.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="SettingsType">
+    <xs:annotation>
+      <xs:documentation>Defines all community settings that apply on the community of the company</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Setting" type="SettingType" maxOccurs="100" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SettingType">
+    <xs:annotation>
+      <xs:documentation>Define the impacted community setting</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="StringLength1to64">
+        <xs:attribute name="Type" type="StringLength1to64" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>
+

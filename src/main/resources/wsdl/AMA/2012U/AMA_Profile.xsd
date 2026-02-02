@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 (http://www.altova.com) by AMADEUS SAS (AMADEUS SAS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ama="http://xml.amadeus.com/2010/06/Types_v2" xmlns="http://xml.amadeus.com/2008/10/AMA/Profile" targetNamespace="http://xml.amadeus.com/2008/10/AMA/Profile" elementFormDefault="qualified" version="1.003" id="AMA2012U">
+  <xs:include schemaLocation="AMA_ProfileAirPreferences.xsd" />
+  <xs:include schemaLocation="AMA_ProfileHotelPreferences.xsd" />
+  <xs:include schemaLocation="AMA_ProfileRailCommonTypes.xsd" />
+  <xs:include schemaLocation="AMA_ProfileVehicleCommonTypes.xsd" />
+  <xs:include schemaLocation="AMA_ProfileAirCommonTypes.xsd" />
+  <xs:include schemaLocation="AMA_ProfileCommunityTypes.xsd" />
+  <xs:import namespace="http://xml.amadeus.com/2010/06/Types_v2" schemaLocation="AMA_CommonTypes_Proxy.xsd" />
+  <xs:annotation>
+    <xs:documentation xml:lang="en">Copyright 2011 Amadeus IT Group SA. All files in the Amadeus Web services specification are strictly confidential .They may not be reproduced in whole or in part without prior written permission  from Amadeus IT Group SA</xs:documentation>
+  </xs:annotation>
+  <xs:complexType name="AccessesType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Element to capture creation and last update data.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Access" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Describes the action taken on the record.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="AccessPerson" type="PersonNameType" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">Name of individual who originated or updated record.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="AccessComment" type="FreeTextType" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation xml:lang="en">Free text comment added by the person accessing the profile record.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="AccessPersonID" type="UniqueID_Type" minOccurs="0" />
+          </xs:sequence>
+          <xs:attribute name="ActionType">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Type of action taken on the profile.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:NMTOKEN">
+                <xs:enumeration value="Create" />
+                <xs:enumeration value="Read" />
+                <xs:enumeration value="Update" />
+                <xs:enumeration value="Delete" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="ActionDateTime" type="xs:dateTime">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Month, day, year and optionally in hour, minute, second of day in ISO 8601 format of the action taken on the profile.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attributeGroup ref="ID_Group">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">The identifier of the system that performed the action on the profile record.</xs:documentation>
+            </xs:annotation>
+          </xs:attributeGroup>
+          <xs:attribute name="SuccessInd" type="xs:boolean" use="optional">
+            <xs:annotation>
+              <xs:documentation>To indicate if the performed action succeeded or failed.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="Context" use="optional">
+            <xs:annotation>
+              <xs:documentation>Type of action taken on the profile</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="StringLength1to16">
+                <xs:enumeration value="First" />
+                <xs:enumeration value="Last" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+          <xs:attribute name="ActionCount" type="StringLength1to16" use="optional">
+            <xs:annotation>
+              <xs:documentation>The number of times the action was performed</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="PrivacyGroup" />
+    <xs:attribute name="CreateDateTime" type="xs:dateTime">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Month, day, year and optionally hour, minute, second of day the profile originated, in ISO 8601 format.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="AffiliationsType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Defines an entity that provides travel services or benefits to a customer or company.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="TPA_Extensions" type="TPA_Extensions_AffiliationType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CompanyInfoType">
+    <xs:sequence>
+      <xs:element name="CompanyName" type="CompanyNameType" minOccurs="0" />
+      <!-- added by vdoleans for slim samoa -->
+      <xs:element name="OtherCompanyName" type="CompanyNameType" minOccurs="0" />
+      <!-- end of section added by vdoleans for slim samoa -->
+      <xs:element name="AddressInfo" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="AddressInfoType">
+              <xs:sequence>
+                <xs:element name="CompanyName" type="CompanyNameType" minOccurs="0" />
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="URL" type="URL_Type" minOccurs="0" maxOccurs="100" />
+      <xs:element name="TelephoneInfo" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+          <xs:attributeGroup ref="TelephoneInfoGroup" />
+          <xs:attributeGroup ref="TransfereToPNRGroup" />
+          <xs:attribute name="OriginalDisplayFormatType" type="ama:CodePatternType">
+            <xs:annotation>
+              <xs:documentation>Information to know which display format should be applied to the Phones with a Technical type other and a location type: home, Agency or business. Refer to Element Format Type (EFT) Amadeus codeset list</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Email" type="EmailType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="PaymentForm" type="PaymentFormType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="TravelArranger" type="TravelArrangerType" minOccurs="0" />
+      <xs:element name="LoyaltyProgram" type="LoyaltyProgramType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="ExternalLoyaltyProgram" type="LoyaltyProgramType" minOccurs="0" maxOccurs="99" />
+      <xs:element name="ContactPerson" type="ContactPersonType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="PersonalId" type="StringLength0to8" minOccurs="0" />
+      <xs:element name="Rates" type="RatesType" minOccurs="0" maxOccurs="100" />
+      <!-- added by vdoleans for slim samoa -->
+      <xs:element name="Location" type="SimpleLocationType" minOccurs="0" />
+      <!-- end of section added by vdoleans for slim samoa -->
+      <xs:element name="TravelCategories" type="TravelCategoriesType" minOccurs="0" />
+      <xs:element name="LocationCountryName" type="CountryNameType" minOccurs="0" />
+      <xs:element name="TPA_Extensions" type="TPA_ExtensionsCompanyType" minOccurs="0" />
+      <!-- added by vdoleans for slim samoa -->
+      <xs:element name="Document" type="DocumentType" minOccurs="0" maxOccurs="10" />
+      <!-- end of section added by vdoleans for slim samoa -->
+    </xs:sequence>
+    <xs:attribute name="Type">
+      <xs:simpleType>
+        <xs:restriction base="StringLength1to64">
+          <xs:enumeration value="Company" />
+          <xs:enumeration value="Travel agency" />
+          <xs:enumeration value="Tour operator" />
+          <xs:enumeration value="Meeting organizer" />
+          <xs:enumeration value="Association" />
+          <xs:enumeration value="Chain property" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="CurrencyCode" type="AlphaLength3" />
+  </xs:complexType>
+  <xs:complexType name="EmployerType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Company or organization that employs the customer.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="CompanyName" type="CompanyNameType" minOccurs="0" />
+      <xs:element name="RelatedEmployer" type="CompanyNameType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="EmployeeInfo" type="EmployeeInfoType" minOccurs="0" maxOccurs="3" />
+      <xs:element name="InternalRefNmbr" type="FreeTextType" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Accounting code(s) assigned to travel for employer.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="TravelArranger" type="TravelArrangerType" minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="LoyaltyProgram" type="LoyaltyProgramType" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attributeGroup ref="DefaultIndGroup" />
+    <xs:attributeGroup ref="OfficeTypeGroup" />
+    <xs:attributeGroup ref="EffectiveExpireOptionalDateGroup" />
+  </xs:complexType>
+  <xs:complexType name="LoyaltyProgramType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Identifies a membership or loyalty program offered by the company by name of the program.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="StringLength0to32">
+        <xs:attribute name="ProgramCode" type="StringLength1to16">
+          <xs:annotation>
+            <xs:documentation xml:lang="en">Identification of the loyalty program by code.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attributeGroup ref="CustomerLoyaltyGroup" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="PreferencesType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Needs of the traveler related to travel experiences.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="PrefCollection" maxOccurs="2500">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Unique aggregation of customer travel needs.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="PreferenceType" />
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="NotificationsType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Social Networks of an end-user</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Notification" maxOccurs="25">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Notification data</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="NotificationType" />
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SocialNetworksType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Social Networks of an end-user</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="SocialNetwork" maxOccurs="25">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Social Network data</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="SocialNetworkType" />
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ProfileType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Root element for profile content.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Accesses" type="AccessesType" minOccurs="0" />
+      <xs:element name="Customer" type="CustomerType" minOccurs="0" />
+      <xs:element name="UserID" minOccurs="0" maxOccurs="9">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="UniqueID_Type">
+              <xs:sequence>
+                <xs:element name="CompanyName" type="CompanyNameType" minOccurs="0" />
+              </xs:sequence>
+              <xs:attribute name="PinNumber" type="StringLength1to512" use="optional">
+                <xs:annotation>
+                  <xs:documentation>The personal Identificatuion Number (password) for this user ID.</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="PinNumberVerification" type="StringLength1to32" use="optional">
+                <xs:annotation>
+                  <xs:documentation>Used to check the PIN for this user ID.</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+              <xs:attribute name="ChangePasswordInd" type="xs:boolean" use="optional" />
+              <xs:attribute name="PinEncryption" type="StringLength1to128" use="optional" />
+              <xs:attribute name="PinLength" type="StringLength0to8" use="optional" />
+              <xs:attribute name="PinDataType" type="StringLength1to128" use="optional" />
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PrefCollections" type="PreferencesType" minOccurs="0" />
+      <xs:element name="CompanyInfo" type="CompanyInfoType" minOccurs="0" />
+      <xs:element name="Affiliations" type="AffiliationsType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Affiliation information related to the profile.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Agreements" type="AgreementsType" minOccurs="0" />
+      <xs:element name="Comments" type="CommentType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Comments related to the profile.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="CustomFields" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="CustomField" type="CustomFieldType" minOccurs="0" maxOccurs="100" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SocialNetworks" type="SocialNetworksType" minOccurs="0" />
+      <xs:element name="Notifications" type="NotificationsType" minOccurs="0" />
+      <xs:element name="NoxIDs" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="NoxID" type="NoxIDType" minOccurs="0" maxOccurs="999" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="Locked" type="xs:boolean">
+      <xs:annotation>
+        <xs:documentation>Indicates if the profile is locked. The values are "true" or "false".</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attributeGroup ref="ProfileTypeGroup" />
+    <xs:attributeGroup ref="DateTimeStampGroup" />
+    <xs:attribute name="RPH" type="RPH_Type" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">This is a reference placeholder, used as an index for this guest in this reservation.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="Status">
+      <xs:annotation>
+        <xs:documentation>Indicates whether a profile is activated or deactivated.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="OTA_CodeType">
+          <xs:enumeration value="L">
+            <xs:annotation>
+              <xs:documentation>Lapsed</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="T">
+            <xs:annotation>
+              <xs:documentation>Terminated</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="A">
+            <xs:annotation>
+              <xs:documentation>Active</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="I">
+            <xs:annotation>
+              <xs:documentation>Inactive</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="6" />
+          <xs:enumeration value="D" />
+          <xs:enumeration value="P" />
+          <xs:enumeration value="R" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="NameMatchingContext" type="StringLength1to3" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">UN for Universal name - RN for Romanized Name - ARN for alternative romanization - NN for Native Name. Matching name context of the last profile in previous result list. It is mentionned in the Read query to retrieve a profile list starting with another profile than the first one.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <!-- added by vdoleans for slim samoa -->
+  <xs:complexType name="MidOfficeType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Root element for profile content.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="VATExemptedReason" type="VATExemptedReasonType" minOccurs="0" />
+      <xs:element name="FeeModel" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="NumericStringLength1to8">
+            <xs:minLength value="8" />
+            <xs:maxLength value="8" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Legalname" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="StringLength1to64">
+            <xs:maxLength value="64" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="CancellationConditions" type="xs:string" minOccurs="0" />
+      <xs:element name="AccountancyNumber" type="xs:string" minOccurs="0" />
+      <xs:element name="PaymentPref" type="PaymentPrefType" minOccurs="0" />
+      <xs:element name="InvoicePref" type="InvoicePrefType" minOccurs="0" />
+      <xs:element name="Document" type="DocumentType" minOccurs="0" maxOccurs="10" />
+      <xs:element name="URL" type="URL_Type" minOccurs="0" maxOccurs="100" />
+      <xs:element name="ProcessingFields" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="ProcessingField" type="ProcessingFieldType" maxOccurs="20" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="SupplierType" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="1" />
+          <xs:enumeration value="2" />
+          <xs:enumeration value="3" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="Voucher" type="xs:boolean" use="optional" />
+    <xs:attribute name="RPH" type="RPH_Type">
+      <xs:annotation>
+        <xs:documentation>This is a reference placeholder.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <!-- end of section added by vdoleans for slim samoa-->
+  <xs:complexType name="CompanyProfilesType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A collection of Profile objects or Unique IDs of Profiles.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ProfileInfo" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="UniqueID" type="UniqueIDExtended_Type" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="Profile" type="ProfileType" />
+            <xs:element name="MidOffice" type="MidOfficeType" minOccurs="0" />
+            <xs:element name="Community" type="CommunityType" minOccurs="0" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ProfilesType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">A collection of Profile objects or Unique IDs of Profiles.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ProfileInfo" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="UniqueID" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="UniqueIDExtended_Type" />
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="ExternalID" type="ExternalID_Type" minOccurs="0" maxOccurs="25" />
+            <xs:element name="Profile" type="ProfileType" />
+            <!-- added by vdoleans for slim samoa -->
+            <xs:element name="MidOffice" type="MidOfficeType" minOccurs="0" />
+            <!-- end of section added by vdoleans for slim samoa -->
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RuleType">
+    <xs:sequence>
+      <xs:element name="PrefCollections" type="PreferencesType" minOccurs="0" />
+      <xs:element name="CustomerInfo" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="CustLoyalty" type="CustLoyaltyType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="PaymentForm" minOccurs="0" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:complexContent>
+                  <xs:extension base="PaymentFormType" />
+                </xs:complexContent>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AgreementsType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Section of a business profile that contains information about trading partner agreements.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <!-- added by vdoleans for slim Samoa -->
+      <xs:element name="CommissionInfo" type="AgInfoType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Rights of other entities on the profile owner</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="MarginInfo" type="AgInfoType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Rights of other entities on the profile owner</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="DiscountInfo" type="AgInfoType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>Rights of other entities on the profile owner</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <!-- end of section added by vdoleans for slim Samoa -->
+      <xs:element name="ContractInformation" type="StringLength0to512" minOccurs="0" />
+      <xs:element name="OwnerRights" type="RoleType" minOccurs="0" maxOccurs="100">
+        <xs:annotation>
+          <xs:documentation>Rights of the profile owner on other entities.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ReceptorRights" type="RoleType" minOccurs="0" maxOccurs="100">
+        <xs:annotation>
+          <xs:documentation>Rights of other entities on the profile owner</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="LegalStatement" minOccurs="0" maxOccurs="3">
+        <xs:annotation>
+          <xs:documentation>Grants access rights on a single booking to offices other than the creator and responsible offices.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="UniqueID" type="UniqueID_Type" minOccurs="0" maxOccurs="2">
+              <xs:annotation>
+                <xs:documentation>Identifier of the person who accepted the Legal Statement</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="PersonName" type="PersonNameType" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>Name of the person who accepted the Legal Statement</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="AcceptedInd" type="xs:boolean" use="optional">
+            <xs:annotation>
+              <xs:documentation>Organization for which access information is being provided.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="AcceptanceDate" type="xs:date" use="optional">
+            <xs:annotation>
+              <xs:documentation>The identifier of the organization for which access information is being provided.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="Context" type="StringLength1to64" use="optional">
+            <xs:annotation>
+              <xs:documentation>The context of the statement  (e.g.: Privacy Statement, Terms And Conditions...)</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="RPH" type="RPH_Type" use="optional">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="AcceptanceTime" type="xs:time" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="PrivacyGroup" />
+  </xs:complexType>
+  <xs:complexType name="BasicDataType">
+    <xs:sequence>
+      <xs:element name="Name" type="PersonNameType" minOccurs="0" />
+      <xs:element name="Gender" type="StringLength1to32" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Locale" type="StringLength1to32" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Picture" type="URL_Type" minOccurs="0" />
+      <xs:element name="WebPage" type="URL_Type" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SocialNetworkAuthorizedDataType">
+    <xs:sequence>
+      <xs:element name="BirthDate" type="xs:date" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Location" type="StringLength1to128" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Email" type="EmailType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="Interests" type="InterestsType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Relations" type="RelationsType" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="InterestsType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">List of the end-user Relations in a given social network</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Interest" type="xs:string" maxOccurs="100" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RelationsType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">List of the end-user Relations in a given social network</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Relation" type="SocialNetworkBasicInfoType" minOccurs="1" maxOccurs="5000" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SocialNetworkBasicInfoType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">List of the end-user Relations in a given social network</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="BasicDataType">
+        <xs:sequence>
+          <xs:element name="UserID" type="ExternalID_Type" minOccurs="0" />
+        </xs:sequence>
+        <xs:attribute name="Type" type="StringLength1to32" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RuleManagementType">
+    <xs:sequence>
+      <xs:element name="TripPurpose" minOccurs="0">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="StringLength0to32">
+              <xs:attributeGroup ref="CodeGroup" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="TravellerCategory" minOccurs="0">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="StringLength0to32">
+              <xs:attributeGroup ref="CodeGroup" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="OriginLocation" type="LocationExtendedType" minOccurs="0" />
+      <xs:element name="DestinationLocation" type="LocationExtendedType" minOccurs="0" />
+      <xs:element name="ConnectingLocation" type="LocationExtendedType" minOccurs="0" />
+      <xs:element name="AdditionalInformation" minOccurs="0">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="StringLength0to128">
+              <xs:attribute name="InformationType" type="OTA_CodeType" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="RuleType" use="required">
+      <xs:annotation>
+        <xs:documentation>Identifies the type of the rule, for example, preference, exclusion, etc.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="OTA_CodeType">
+          <xs:enumeration value="1" />
+          <xs:enumeration value="2" />
+          <xs:enumeration value="3" />
+          <xs:enumeration value="4" />
+          <xs:enumeration value="5" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="TravelSector" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Identifies the travel sector. Refer to OTA Code List Travel Sector (TVS).</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="OTA_CodeType">
+          <xs:enumeration value="1" />
+          <xs:enumeration value="2" />
+          <xs:enumeration value="3" />
+          <xs:enumeration value="7" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="PrivilegeIndicator">
+      <xs:annotation>
+        <xs:documentation>Identifies the privilege level.</xs:documentation>
+      </xs:annotation>
+      <xs:simpleType>
+        <xs:restriction base="OTA_CodeType">
+          <xs:enumeration value="L" />
+          <xs:enumeration value="O" />
+          <xs:enumeration value="S" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="Priority" type="StringLength0to8">
+      <xs:annotation>
+        <xs:documentation>Identifies the priority level.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ValidityStartDate" type="xs:date" />
+    <xs:attribute name="ValidityEndDate" type="xs:date" />
+    <xs:attribute name="MaxChanges" type="xs:nonNegativeInteger" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Indicates the maximum number of connections (if 0, then direct)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="DepartureTimePref" type="xs:time">
+      <xs:annotation>
+        <xs:documentation>Used to indicate a preferred Departure time</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="ArrivalTimePref" type="xs:time">
+      <xs:annotation>
+        <xs:documentation>Used to indicate a preferred Arrival time</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="RPH" type="RPH_Type" use="optional">
+      <xs:annotation>
+        <xs:documentation>This is a reference placeholder.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="NotificationType">
+    <xs:sequence>
+      <xs:choice>
+        <xs:element name="CustomerNotification" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="NotifLink" type="RPH_Type" use="required">
+              <xs:annotation>
+                <xs:documentation>Enables to reuse customer data such as an email or a phone as notification media</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ThirdPartyNotification" maxOccurs="1">
+          <xs:complexType>
+            <xs:attribute name="Type" type="OTA_CodeType" use="required">
+              <xs:annotation>
+                <xs:documentation>Indicates the type of the third party, ie. F for Friend, W for Wife...</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="Value" type="StringLength1to128" use="required">
+              <xs:annotation>
+                <xs:documentation>An email or a phone number of a relation (friend, wife...) to notify</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attributeGroup ref="TransfereToPNRGroup" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:element name="NotificationSecurity" type="ama:ItemAccessControl" minOccurs="0" />
+      <xs:element name="LanguageSpoken" minOccurs="0" maxOccurs="5">
+        <xs:complexType>
+          <xs:attribute name="Code" type="xs:language" />
+          <xs:attribute name="DefaultInd" type="xs:boolean" />
+          <xs:attribute name="RPH" type="RPH_Type" use="optional">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="NotificationType" type="OTA_CodeType" use="required">
+      <xs:annotation>
+        <xs:documentation>Examples: M = Mobile Phone- E = Email - P = Push</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="RPH" type="RPH_Type" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Used elsewhere in the message to reference a specific telephone number (including faxes).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="SocialNetworkType">
+    <xs:sequence>
+      <xs:element name="SocialNetworkBasicInfo" type="SocialNetworkBasicInfoType" minOccurs="0" maxOccurs="1" />
+      <xs:element name="SocialNetworkAuthorizedData" type="SocialNetworkAuthorizedDataType" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="Name" type="StringLength1to64" use="optional">
+      <xs:annotation>
+        <xs:documentation>Name of the social network : Facebook, LinkedIn, Twitter...</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="NotifLink" type="RPH_Type" use="optional">
+      <xs:annotation>
+        <xs:documentation>Enables to reuse customer data such as an email or a phone as notification media</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="PreferenceType">
+    <xs:sequence>
+      <xs:element name="RuleManagement" type="RuleManagementType" minOccurs="0" />
+      <xs:element name="AirlinePref" minOccurs="0">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="AirlinePrefType" />
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="OtherSrvcPref" minOccurs="0">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="OtherSrvcPrefType">
+              <xs:attribute name="RPH" type="RPH_Type" use="optional">
+                <xs:annotation>
+                  <xs:documentation>This is a reference placeholder.</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="CustomField" type="CustomFieldType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="CommonPref" minOccurs="0" maxOccurs="100">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="CommonPrefType">
+              <xs:attribute name="RPH" type="RPH_Type" use="optional">
+                <xs:annotation>
+                  <xs:documentation>This is a reference placeholder.</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="HotelPref" type="HotelPrefType" minOccurs="0" maxOccurs="100" />
+      <xs:element name="VehicleRentalPref" type="VehicleProfileRentalPrefType" minOccurs="0" />
+      <xs:element name="RailPref" type="RailPrefType" minOccurs="0" />
+      <xs:element name="UserPref" type="UserPrefType" minOccurs="0" />
+      <xs:element name="FarePref" minOccurs="0">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:extension base="PriceRequestInformationType">
+              <xs:sequence>
+                <xs:element name="DiscountPricing" minOccurs="0">
+                  <xs:annotation>
+                    <xs:documentation xml:lang="en">The information needed when a passenger presents a discount/promotional coupon for a dollar/percentage of the fare or when a passenger qualifies for a percentage discount such as a senior discount.</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:attributeGroup ref="DiscountPricingGroup" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="FareExpandedParameter" minOccurs="0" maxOccurs="2">
+                  <xs:annotation>
+                    <xs:documentation>THE EXPANDED PARAMETERS OPTION ALLOWS YOU TO DISPLAY FARES 
+ACCORDING TO THE RESTRICTIONS ASSOCIATED WITH THE FARE. FOR
+EXAMPLE, YOU CAN REQUEST FARES WITH NO PENALTY INFORMATION:</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:attributeGroup ref="CodeGroup" />
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="FareTypeRequest" minOccurs="0" maxOccurs="3">
+                  <xs:annotation>
+                    <xs:documentation>YOU CAN REQUEST A DISPLAY OF SPECIFIC FARE TYPES USING THE /R
+REMARK OPTION FOLLOWED BY THE REQUEST TYPE CODE.</xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:attributeGroup ref="CodeGroup" />
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:extension>
+          </xs:complexContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="TravelPurpose" type="OTA_CodeType" use="optional">
+      <xs:annotation>
+        <xs:documentation>Indicates the kind of data (1 if flat, 0 if not)</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+  <xs:complexType name="ActivityDetailsType">
+    <xs:sequence>
+      <xs:element name="Operation" minOccurs="0" maxOccurs="3">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="OldValues" minOccurs="0">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="ProfileInfo" type="ProfileInfoType" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+            <xs:element name="NewValues" minOccurs="0">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="ProfileInfo" type="ProfileInfoType" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+          <xs:attribute name="OperationType" type="StringLength1to64">
+            <xs:annotation>
+              <xs:documentation>The type of the operation (Update, Retrieve or Delete)</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ProfileInfoType">
+    <xs:sequence>
+      <xs:element name="UniqueID" type="UniqueID_Type" minOccurs="0" maxOccurs="10" />
+      <xs:element name="Profile" type="ProfileType" />
+      <xs:element name="MidOffice" type="MidOfficeType" minOccurs="0" />
+      <xs:element name="Community" type="CommunityType" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ProfileEnvelopeInfoType">
+    <xs:annotation>
+      <xs:documentation>Represents a given image of a profile (envelop)</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="ActionDetails" type="ActionDetailsType" minOccurs="0" />
+      <xs:element name="ProfileInfo" type="ProfileInfoType" />
+      <xs:element name="ActivityDetails" type="ActivityDetailsType" minOccurs="0" />
+      <xs:element name="Warnings" type="WarningsType" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation xml:lang="en-us">Contains the generated warnings at create/update time.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

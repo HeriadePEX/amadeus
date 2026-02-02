@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 (http://www.altova.com) by AMADEUS SAS (AMADEUS SAS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.amadeus.com/2008/10/AMA/Profile" targetNamespace="http://xml.amadeus.com/2008/10/AMA/Profile" elementFormDefault="qualified" version="1.003" id="AMA2012U">
+  <xs:include schemaLocation="AMA_ProfileHotelPreferences.xsd" />
+  <xs:annotation>
+    <xs:documentation xml:lang="en">Copyright 2011 Amadeus IT Group SA. All files in the Amadeus Web services specification are strictly confidential .They may not be reproduced in whole or in part without prior written permission  from Amadeus IT Group SA</xs:documentation>
+  </xs:annotation>
+  <xs:attributeGroup name="RailSeatPrefsGroup">
+    <xs:attribute name="SeatDirection" type="SeatDirectionType" use="optional" />
+    <xs:attribute name="SeatPreference" type="SeatType" use="optional" />
+    <xs:attribute name="CarPreference" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="StringLength0to32" />
+      </xs:simpleType>
+    </xs:attribute>
+    <xs:attribute name="MealTypeCode" type="OTA_CodeType" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">The type of meal being served. Refer to OTA Code list Available Meal Category (AMC).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="RailSeatReferenceGroup">
+    <xs:attribute name="SeatRef" type="StringLength1to16" use="optional" />
+    <xs:attribute name="CarRef" type="StringLength1to16" use="optional" />
+    <xs:attribute name="SeatPosition" use="optional">
+      <xs:simpleType>
+        <xs:restriction base="StringLength1to16">
+          <xs:enumeration value="SR">
+            <xs:annotation>
+              <xs:documentation>End</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="SC">
+            <xs:annotation>
+              <xs:documentation>Center</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:complexType name="RailAvailPrefsType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The RailAvailPrefsType complex type defines the infornation that is used to express the preferences when requesting rail avilability information.</xs:documentation>
+    </xs:annotation>
+  </xs:complexType>
+  <xs:complexType name="RailAmenityType">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">The RailAmenityType complex type defines the information used to describe a specific amenity and the associated preference level.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="RailAmenity" maxOccurs="20">
+        <xs:annotation>
+          <xs:documentation xml:lang="en">Describes a specific amenity along with the preference for that amenity.  Preference may relect inclusion or exclusion.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:attributeGroup ref="CodeListGroup" />
+          <xs:attributeGroup ref="PreferLevelGroup" />
+          <xs:attribute name="RPH" type="RPH_Type">
+            <xs:annotation>
+              <xs:documentation>This is a reference placeholder.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RailPrefType">
+    <xs:complexContent>
+      <xs:extension base="RailAvailPrefsType">
+        <xs:sequence>
+          <xs:element name="RailAmenities" type="RailAmenityType" minOccurs="0">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Specifies the amenities qualifying the availability request.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+          <xs:element name="ClassCodePref" minOccurs="0" maxOccurs="100">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">A specific code representing one specific class of service.  Such class of service may represent First class, reserved seats, sleeper accommodations, etc.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+              <xs:attributeGroup ref="CodeListGroup" />
+              <xs:attribute name="RPH" type="RPH_Type" use="optional" />
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="SeatAssignmentPref" minOccurs="0">
+            <xs:complexType>
+              <xs:attributeGroup ref="RailSeatReferenceGroup" />
+              <xs:attribute name="RPH" type="RPH_Type">
+                <xs:annotation>
+                  <xs:documentation>This is a reference placeholder.</xs:documentation>
+                </xs:annotation>
+              </xs:attribute>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="OriginStationPref" type="StationOriginPrefType" minOccurs="0" />
+          <xs:element name="DestinationStationPref" type="StationOriginPrefType" minOccurs="0" />
+          <xs:element name="PaymentFormPref" minOccurs="0" maxOccurs="100">
+            <xs:complexType>
+              <xs:complexContent>
+                <xs:extension base="PaymentFormPrefType">
+                  <xs:attribute name="PaymentTransactionTypeCode" use="optional">
+                    <xs:annotation>
+                      <xs:documentation xml:lang="en">This is used to indicate either a charge or reserve (deposit).</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                      <xs:restriction base="xs:NMTOKEN">
+                        <xs:enumeration value="charge">
+                          <xs:annotation>
+                            <xs:documentation xml:lang="en">This indicates that an actual payment has been made.</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                        <xs:enumeration value="reserve">
+                          <xs:annotation>
+                            <xs:documentation xml:lang="en">This indicates that a hold for the indicated amount has been placed on a credit card or that a cash amount has been taken from the customer to guarantee final payment.</xs:documentation>
+                          </xs:annotation>
+                        </xs:enumeration>
+                      </xs:restriction>
+                    </xs:simpleType>
+                  </xs:attribute>
+                  <xs:attribute name="PaymentTypeCode" type="OTA_CodeType" use="optional">
+                    <xs:annotation>
+                      <xs:documentation xml:lang="en">Used to specify the method of guarantee. Refer to OTA Code List Payment Type (PMT).</xs:documentation>
+                    </xs:annotation>
+                  </xs:attribute>
+                </xs:extension>
+              </xs:complexContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="TicketDistribPref" type="TicketDistribPrefType" minOccurs="0" />
+          <xs:element name="FarePref" type="FareElementsPrefType" minOccurs="0" maxOccurs="100" />
+          <xs:element name="AdditionalInformation" minOccurs="0" maxOccurs="10">
+            <xs:complexType>
+              <xs:simpleContent>
+                <xs:extension base="StringLength0to128">
+                  <xs:attribute name="InformationType" type="OTA_CodeType" />
+                </xs:extension>
+              </xs:simpleContent>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="VendorPref" type="CompanyNamePrefType" minOccurs="0" maxOccurs="20">
+            <xs:annotation>
+              <xs:documentation xml:lang="en">Vendor Preferences indicates a preference for a specific car rental agency when used in a travel collection. The VendorPref element uses the Company Name entity to identify the preferred company by name and by vendor code.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attributeGroup ref="SmokingIndicatorGroup" />
+        <xs:attributeGroup ref="RailSeatPrefsGroup" />
+        <xs:attribute name="MaxChanges" type="StringLength1to8" use="optional" />
+        <xs:attribute name="DepartureTimePref" type="StringLength1to32" use="optional" />
+        <xs:attribute name="ArrivalTimePref" type="StringLength1to32" use="optional" />
+        <xs:attribute name="CabinShareType" use="optional">
+          <xs:simpleType>
+            <xs:restriction base="StringLength1to8">
+              <xs:enumeration value="SM" />
+              <xs:enumeration value="SW" />
+              <xs:enumeration value="SF" />
+              <xs:enumeration value="SC" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="RPH" type="RPH_Type" use="optional">
+          <xs:annotation>
+            <xs:documentation>This is a reference placeholder.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="StationOriginPrefType">
+    <xs:attribute name="StationCode" type="StringLength1to32" use="optional">
+      <xs:annotation>
+        <xs:documentation xml:lang="en">Code used to identify a location.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="CountryCode" type="ISO3166" />
+    <xs:attribute name="RPH" type="RPH_Type">
+      <xs:annotation>
+        <xs:documentation>This is a reference placeholder.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+  </xs:complexType>
+</xs:schema>
+

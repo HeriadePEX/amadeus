@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 rel. 3 (http://www.altova.com) by AMADEUS SAS (AMADEUS SAS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.amadeus.com/2008/10/AMA/Profile" targetNamespace="http://xml.amadeus.com/2008/10/AMA/Profile" elementFormDefault="qualified" version="1.003" id="AMA2012U">
+  <xs:include schemaLocation="AMA_Profile.xsd" />
+  <xs:annotation>
+    <xs:documentation xml:lang="en">Copyright 2011 Amadeus IT Group SA. All files in the Amadeus Web services specification are strictly confidential .They may not be reproduced in whole or in part without prior written permission  from Amadeus IT Group SA</xs:documentation>
+  </xs:annotation>
+  <xs:complexType name="PartialUpdatePositionType">
+    <xs:choice>
+      <xs:element name="Root" maxOccurs="2">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="UniqueID" type="UniqueID_Type" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="Profile" type="ProfileType" />
+            <!-- added by vdoleans for slim samoa -->
+            <xs:element name="MidOffice" type="MidOfficeType" minOccurs="0" />
+            <!-- end of section added by vdoleans for slim samoa -->
+          </xs:sequence>
+          <xs:attribute name="Operation" use="required">
+            <xs:annotation>
+              <xs:documentation>This attributes is used to specify the operation to be perfomed on the field in the profile node (e.g. Delete)</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="update" />
+                <xs:enumeration value="delete" />
+                <xs:enumeration value="mileageupdate" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+    <xs:attribute name="XPath" type="xs:string" use="required" />
+  </xs:complexType>
+  <xs:complexType name="UpdatePositionType">
+    <xs:choice>
+      <xs:element name="Root">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="UniqueID" type="UniqueID_Type" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="ExternalID" type="ExternalID_Type" minOccurs="0" maxOccurs="25" />
+            <xs:element name="Profile" type="ProfileType" />
+            <!-- added by vdoleans for slim samoa -->
+            <xs:element name="MidOffice" type="MidOfficeType" minOccurs="0" />
+            <!-- end of section added by vdoleans for slim samoa -->
+          </xs:sequence>
+          <xs:attribute name="Operation" use="required">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="replace" />
+                <xs:enumeration value="createupdate" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+    <xs:attribute name="XPath" type="xs:string" use="required" />
+  </xs:complexType>
+</xs:schema>
+

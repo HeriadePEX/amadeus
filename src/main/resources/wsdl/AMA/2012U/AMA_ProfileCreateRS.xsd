@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2012 rel. 2 (http://www.altova.com) by AMADEUS SAS (AMADEUS SAS) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.amadeus.com/2008/10/AMA/Profile" targetNamespace="http://xml.amadeus.com/2008/10/AMA/Profile" elementFormDefault="qualified" version="2.003" id="AMA2012U">
+  <xs:include schemaLocation="AMA_Profile.xsd" />
+  <xs:annotation>
+    <xs:documentation xml:lang="en">Copyright 2011 Amadeus IT Group SA. All files in the Amadeus Web services specification are strictly confidential .They may not be reproduced in whole or in part without prior written permission  from Amadeus IT Group SA</xs:documentation>
+  </xs:annotation>
+  <xs:element name="AMA_ProfileCreateRS">
+    <xs:complexType>
+      <xs:choice>
+        <xs:sequence>
+          <xs:element name="Success" type="SuccessType" />
+          <xs:element name="UniqueID" type="UniqueID_Type" minOccurs="0" maxOccurs="5" />
+          <xs:element name="ExternalID" type="ExternalID_Type" minOccurs="0" maxOccurs="25" />
+          <xs:element name="Warnings" type="WarningsType" minOccurs="0" />
+        </xs:sequence>
+        <xs:element name="Errors" type="ErrorsType" />
+      </xs:choice>
+      <xs:attributeGroup ref="OTA_PayloadStdAttributes" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+
