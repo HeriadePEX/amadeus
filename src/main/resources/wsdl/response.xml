@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+               xmlns:awsse="http://xml.amadeus.com/2010/06/Session_v3" xmlns:wsa="http://www.w3.org/2005/08/addressing">
+    <soap:Header>
+        <wsa:To>http://www.w3.org/2005/08/addressing/anonymous</wsa:To>
+        <wsa:From>
+            <wsa:Address>https://nodeD2.test.webservices.amadeus.com/1ASIWPROG8T</wsa:Address>
+        </wsa:From>
+        <wsa:Action>http://webservices.amadeus.com/Profile_ReadProfile_12.2</wsa:Action>
+        <wsa:MessageID>urn:uuid:ee9a1f56-eb3f-3a94-ed1c-cefd52f2c9b0</wsa:MessageID>
+        <wsa:RelatesTo RelationshipType="http://www.w3.org/2005/08/addressing/reply">
+            urn:uuid:0cae13e5-2c18-4d16-8b87-ba1f4718424c
+        </wsa:RelatesTo>
+        <awsse:Session TransactionStatusCode="End">
+            <awsse:SessionId>01ATK4F53N</awsse:SessionId>
+            <awsse:SequenceNumber>1</awsse:SequenceNumber>
+            <awsse:SecurityToken>3B52CTFHED8PP1R1OYDOFVP541</awsse:SecurityToken>
+        </awsse:Session>
+    </soap:Header>
+    <soap:Body>
+        <AMA_ProfileReadRS xmlns="http://xml.amadeus.com/2008/10/AMA/Profile"
+                           xmlns:ama="http://xml.amadeus.com/2010/06/Types_v2" Version="12.2">
+            <Errors>
+                <Error Code="2.HGC" ShortText="INVALID DATA" Type="21">Invalid office id given</Error>
+            </Errors>
+        </AMA_ProfileReadRS>
+    </soap:Body>
+</soap:Envelope>

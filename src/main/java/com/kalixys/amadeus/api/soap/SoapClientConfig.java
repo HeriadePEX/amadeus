@@ -19,7 +19,13 @@ public class SoapClientConfig {
     @Bean
     public Jaxb2Marshaller jaxb2Marshaller() {
         Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
-        marshaller.setPackagesToScan("com.amadeus");
+        marshaller.setClassesToBeBound(
+            com.amadeus.xml._2008._10.ama.profile.ObjectFactory.class,
+            com.amadeus.xml.fudreq_01_1_1a.ObjectFactory.class,
+            com.amadeus.xml.fudres_01_1_1a.ObjectFactory.class,
+            com.amadeus.xml.vlssoq_04_1_1a.ObjectFactory.class,
+            com.amadeus.xml.vlssor_04_1_1a.ObjectFactory.class
+        );
         return marshaller;
     }
 

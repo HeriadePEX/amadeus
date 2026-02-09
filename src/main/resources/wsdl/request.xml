@@ -1,0 +1,45 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header>
+        <wsa:MessageID xmlns:wsa="http://www.w3.org/2005/08/addressing">urn:uuid:fdfee46c-be90-42dc-ab9e-2209bfe2db63
+        </wsa:MessageID>
+        <wsa:Action xmlns:wsa="http://www.w3.org/2005/08/addressing">
+            http://webservices.amadeus.com/Profile_ReadProfile_12.2
+        </wsa:Action>
+        <wsa:To xmlns:wsa="http://www.w3.org/2005/08/addressing">
+            https://nodeD2.test.webservices.amadeus.com/1ASIWPROG8T
+        </wsa:To>
+        <oas:Security xmlns:oas="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd">
+            <oas:UsernameToken
+                    xmlns:oas1="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+                    oas1:Id="UsernameToken-1">
+                <oas:Username>WSG8TPRO</oas:Username>
+                <oas:Nonce
+                        EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">
+                    fZ10lP1H+4y3+VTBxEN4eg==
+                </oas:Nonce>
+                <oas:Password
+                        Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordDigest">
+                    J8sqQHKeAMjuhybCUROetfNTVCQ=
+                </oas:Password>
+                <oas1:Created>2026-02-04T10:21:00.871056Z</oas1:Created>
+            </oas:UsernameToken>
+        </oas:Security>
+        <amasec:AMA_SecurityHostedUser xmlns:amasec="http://xml.amadeus.com/2010/06/Security_v1">
+            <amasec:UserID AgentDutyCode="SU" POS_Type="1" PseudoCityCode="PARFT2796" RequestorType="U"/>
+        </amasec:AMA_SecurityHostedUser>
+    </SOAP-ENV:Header>
+    <SOAP-ENV:Body>
+        <ns2:AMA_ProfileReadRQ xmlns:ns2="http://xml.amadeus.com/2008/10/AMA/Profile"
+                               xmlns:ns3="http://xml.amadeus.com/2010/06/Types_v2"
+                               xmlns:ns4="http://xml.amadeus.com/FUDREQ_01_1_1A"
+                               xmlns:ns5="http://xml.amadeus.com/FUDRES_01_1_1A"
+                               xmlns:ns6="http://xml.amadeus.com/VLSSOQ_04_1_1A"
+                               xmlns:ns7="http://xml.amadeus.com/VLSSOR_04_1_1A" Version="12.2">
+            <ns2:ReadRequests>
+                <ns2:ProfileReadRequest ProfileType="1">
+                    <ns2:UniqueID ID="19SYY8" ID_Context="CSX" Instance="1" Type="21"/>
+                </ns2:ProfileReadRequest>
+            </ns2:ReadRequests>
+        </ns2:AMA_ProfileReadRQ>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
