@@ -11,7 +11,7 @@ RUN ./gradlew bootJar -x test --no-daemon
 FROM eclipse-temurin:25-jre
 WORKDIR /app
 
-COPY --from=build /app/build/libs/amadeus-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY --from=build /app/build/libs/api-0.0.1-SNAPSHOT.jar /app/app.jar
 
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app/app.jar"]
