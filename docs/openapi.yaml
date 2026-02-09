@@ -1,0 +1,210 @@
+openapi: 3.0.3
+info:
+  title: Amadeus REST API (local wrapper)
+  version: 0.0.1
+  description: |
+    REST endpoints that forward JSON payloads to Amadeus SOAP services.
+    All endpoints accept and return a wrapper with a `payload` object and an optional `session`.
+servers:
+  - url: https://test.api.amadeus.kalixys.com
+  - url: http://localhost:8080
+paths:
+  /api/profiles:
+    post:
+      summary: Create Profile
+      operationId: createProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoapRequest"
+            example:
+              payload:
+                Version: 12.2
+                Profile:
+                  ProfileType: C
+              session:
+                sessionId: string
+                sequenceNumber: 1
+                securityToken: string
+                transactionStatusCode: string
+      responses:
+        "200":
+          description: SOAP response wrapper
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoapResponse"
+    put:
+      summary: Update Profile
+      operationId: updateProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoapRequest"
+            example:
+              payload:
+                Version: 12.2
+                Profile:
+                  ProfileType: C
+                  UniqueID:
+                    ID: ABC123
+                    Type: 9
+              session:
+                sessionId: string
+                sequenceNumber: 1
+                securityToken: string
+                transactionStatusCode: string
+      responses:
+        "200":
+          description: SOAP response wrapper
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoapResponse"
+    delete:
+      summary: Delete Profile
+      operationId: deleteProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoapRequest"
+            example:
+              payload:
+                Version: 12.2
+                UniqueID:
+                  ID: ABC123
+                  Type: 9
+              session:
+                sessionId: string
+                sequenceNumber: 1
+                securityToken: string
+                transactionStatusCode: string
+      responses:
+        "200":
+          description: SOAP response wrapper
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoapResponse"
+  /api/profiles/search:
+    post:
+      summary: Read Profile (search)
+      operationId: readProfile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoapRequest"
+            example:
+              payload:
+                Version: 12.2
+                ReadRequests:
+                  ProfileReadRequest:
+                    UniqueID:
+                      Type: C
+                      ID: ABC123
+              session:
+                sessionId: string
+                sequenceNumber: 1
+                securityToken: string
+                transactionStatusCode: string
+      responses:
+        "200":
+          description: SOAP response wrapper
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoapResponse"
+  /api/profiles/deactivated:
+    post:
+      summary: List Deactivated Profiles
+      operationId: listDeactivatedProfiles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoapRequest"
+            example:
+              payload:
+                Version: 1.0
+                MessageFunctionDetails:
+                  MessageFunction: "1"
+              session:
+                sessionId: string
+                sequenceNumber: 1
+                securityToken: string
+                transactionStatusCode: string
+      responses:
+        "200":
+          description: SOAP response wrapper
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoapResponse"
+  /api/sessions:
+    delete:
+      summary: Sign Out
+      operationId: signOut
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SoapRequest"
+            example:
+              payload:
+                OriginatorDetails:
+                  InHouseIdentification1: string
+              session:
+                sessionId: string
+                sequenceNumber: 1
+                securityToken: string
+                transactionStatusCode: string
+      responses:
+        "200":
+          description: SOAP response wrapper
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SoapResponse"
+components:
+  schemas:
+    SoapRequest:
+      type: object
+      required:
+        - payload
+      properties:
+        payload:
+          type: object
+          additionalProperties: true
+          description: SOAP request object (JAXB)
+        session:
+          $ref: "#/components/schemas/SessionContext"
+    SoapResponse:
+      type: object
+      properties:
+        payload:
+          type: object
+          additionalProperties: true
+          description: SOAP response object (JAXB)
+        session:
+          $ref: "#/components/schemas/SessionContext"
+    SessionContext:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        sequenceNumber:
+          type: integer
+        securityToken:
+          type: string
+        transactionStatusCode:
+          type: string
