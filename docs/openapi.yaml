@@ -96,6 +96,22 @@ paths:
     post:
       summary: Read Profile (search)
       operationId: readProfile
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: size
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 150
+            default: 50
       requestBody:
         required: true
         content:
@@ -117,15 +133,31 @@ paths:
                 transactionStatusCode: string
       responses:
         "200":
-          description: SOAP response wrapper
+          description: SOAP response wrapper with pagination
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SoapResponse"
+                $ref: "#/components/schemas/PaginatedSoapResponse"
   /api/profiles/deactivated:
     post:
       summary: List Deactivated Profiles
       operationId: listDeactivatedProfiles
+      parameters:
+        - in: query
+          name: page
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: size
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 150
+            default: 50
       requestBody:
         required: true
         content:
@@ -144,11 +176,11 @@ paths:
                 transactionStatusCode: string
       responses:
         "200":
-          description: SOAP response wrapper
+          description: SOAP response wrapper with pagination
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SoapResponse"
+                $ref: "#/components/schemas/PaginatedSoapResponse"
   /api/sessions:
     delete:
       summary: Sign Out
@@ -197,6 +229,31 @@ components:
           description: SOAP response object (JAXB)
         session:
           $ref: "#/components/schemas/SessionContext"
+    PaginatedSoapResponse:
+      type: object
+      properties:
+        payload:
+          type: object
+          additionalProperties: true
+          description: SOAP response object (JAXB)
+        session:
+          $ref: "#/components/schemas/SessionContext"
+        pagination:
+          $ref: "#/components/schemas/PaginationMetadata"
+    PaginationMetadata:
+      type: object
+      properties:
+        page:
+          type: integer
+        size:
+          type: integer
+        returnedCount:
+          type: integer
+        hasNext:
+          type: boolean
+        nextCursor:
+          type: string
+          nullable: true
     SessionContext:
       type: object
       properties:
