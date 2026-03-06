@@ -58,10 +58,12 @@ public class AmadeusRestController {
         AMAProfileReadRQ payload = requirePayload(request.payload());
         payload.setMaxResponses(BigInteger.valueOf(size));
         payload.setMoreDataEchoToken(null);
+        SessionContext session = request.session();
 
         SoapResponse<AMAProfileReadRS> response = null;
         for (int currentPage = DEFAULT_PAGE; currentPage <= page; currentPage++) {
-            response = soapClient.call(ACTION_PROFILE_READ, payload, AMAProfileReadRS.class, request.session());
+            response = soapClient.call(ACTION_PROFILE_READ, payload, AMAProfileReadRS.class, session);
+            session = response.session();
             AMAProfileReadRS payloadResponse = response.payload();
 
             if (currentPage == page) {
@@ -110,11 +112,13 @@ public class AmadeusRestController {
         validatePagination(page, size);
         ProfileListDeactivatedProfiles payload = requirePayload(request.payload());
         ensureDeactivatedPageSize(payload, size);
+        SessionContext session = request.session();
 
         SoapResponse<ProfileListDeactivatedProfilesReply> response = null;
         for (int currentPage = DEFAULT_PAGE; currentPage <= page; currentPage++) {
             response = soapClient.call(ACTION_PROFILE_LIST_DEACTIVATED, payload,
-                ProfileListDeactivatedProfilesReply.class, request.session());
+                ProfileListDeactivatedProfilesReply.class, session);
+            session = response.session();
             ProfileListDeactivatedProfilesReply payloadResponse = response.payload();
 
             if (currentPage == page) {
