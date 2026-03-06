@@ -29,6 +29,8 @@ public class AmadeusRestController {
     private static final int MAX_SIZE = 150;
     private static final String PAGINATION_HAS_MORE = "Y";
     private static final String PAGINATION_NO_MORE = "N";
+    private static final String SESSION_STATUS_END = "End";
+    private static final String SESSION_STATUS_IN_SERIES = "InSeries";
 
     private static final String ACTION_PROFILE_CREATE = "http://webservices.amadeus.com/Profile_CreateProfile_12.2";
     private static final String ACTION_PROFILE_READ = "http://webservices.amadeus.com/Profile_ReadProfile_12.2";
@@ -63,7 +65,7 @@ public class AmadeusRestController {
         SoapResponse<AMAProfileReadRS> response = null;
         for (int currentPage = DEFAULT_PAGE; currentPage <= page; currentPage++) {
             response = soapClient.call(ACTION_PROFILE_READ, payload, AMAProfileReadRS.class, session);
-            session = response.session();
+            session = nextSessionForFollowUp(response.session());
             AMAProfileReadRS payloadResponse = response.payload();
 
             if (currentPage == page) {
@@ -118,7 +120,7 @@ public class AmadeusRestController {
         for (int currentPage = DEFAULT_PAGE; currentPage <= page; currentPage++) {
             response = soapClient.call(ACTION_PROFILE_LIST_DEACTIVATED, payload,
                 ProfileListDeactivatedProfilesReply.class, session);
-            session = response.session();
+            session = nextSessionForFollowUp(response.session());
             ProfileListDeactivatedProfilesReply payloadResponse = response.payload();
 
             if (currentPage == page) {
@@ -381,6 +383,25 @@ public class AmadeusRestController {
 
     private static boolean isBlank(String value) {
         return value == null || value.isBlank();
+    }
+
+    private static SessionContext nextSessionForFollowUp(SessionContext responseSession) {
+        if (responseSession == null) {
+            return null;
+        }
+        if (isBlank(responseSession.sessionId()) || isBlank(responseSession.securityToken())) {
+            return null;
+        }
+        if (SESSION_STATUS_END.equalsIgnoreCase(responseSession.transactionStatusCode())) {
+            return null;
+        }
+        Integer nextSequence = responseSession.sequenceNumber() == null ? null : responseSession.sequenceNumber() + 1;
+        return new SessionContext(
+            responseSession.sessionId(),
+            nextSequence,
+            responseSession.securityToken(),
+            SESSION_STATUS_IN_SERIES
+        );
     }
 
     private static String safeValue(String value) {
