@@ -58,9 +58,9 @@ Note: les structures SOAP sont vastes; ce fichier detaille les champs racines et
 
 ## List Deactivated Profiles (POST /api/profiles/deactivated)
 
-Pagination REST:
-- Query params optionnels: `page` (>=1, defaut 1), `size` (1..150, defaut 50).
-- Reponse REST: `payload`, `session`, `pagination{page,size,returnedCount,hasNext,nextCursor}`.
+Recherche REST:
+- Query param optionnel: `size` (>=1, sans limite imposee par l'API REST).
+- Reponse REST: `payload`, `session`, `resultCount`.
 
 | Entite | Champs | Cardinalite | Commentaire |
 | --- | --- | --- | --- |
@@ -77,9 +77,9 @@ Pagination REST:
 
 ## Read Profile (POST /api/profiles/search)
 
-Pagination REST:
-- Query params optionnels: `page` (>=1, defaut 1), `size` (1..150, defaut 50).
-- Reponse REST: `payload`, `session`, `pagination{page,size,returnedCount,hasNext,nextCursor}`.
+Recherche REST:
+- Query param optionnel: `size` (>=1, sans limite imposee par l'API REST).
+- Reponse REST: `payload`, `session`, `resultCount`.
 
 ## Sign Out (DELETE /api/sessions)
 

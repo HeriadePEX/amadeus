@@ -98,20 +98,12 @@ paths:
       operationId: readProfile
       parameters:
         - in: query
-          name: page
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            default: 1
-        - in: query
           name: size
           required: false
           schema:
             type: integer
             minimum: 1
-            maximum: 150
-            default: 50
+          description: Number of results to return.
       requestBody:
         required: true
         content:
@@ -133,31 +125,23 @@ paths:
                 transactionStatusCode: string
       responses:
         "200":
-          description: SOAP response wrapper with pagination
+          description: SOAP response wrapper with result count
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaginatedSoapResponse"
+                $ref: "#/components/schemas/SearchSoapResponse"
   /api/profiles/deactivated:
     post:
       summary: List Deactivated Profiles
       operationId: listDeactivatedProfiles
       parameters:
         - in: query
-          name: page
-          required: false
-          schema:
-            type: integer
-            minimum: 1
-            default: 1
-        - in: query
           name: size
           required: false
           schema:
             type: integer
             minimum: 1
-            maximum: 150
-            default: 50
+          description: Number of results to return.
       requestBody:
         required: true
         content:
@@ -176,11 +160,11 @@ paths:
                 transactionStatusCode: string
       responses:
         "200":
-          description: SOAP response wrapper with pagination
+          description: SOAP response wrapper with result count
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PaginatedSoapResponse"
+                $ref: "#/components/schemas/SearchSoapResponse"
   /api/sessions:
     delete:
       summary: Sign Out
@@ -229,7 +213,7 @@ components:
           description: SOAP response object (JAXB)
         session:
           $ref: "#/components/schemas/SessionContext"
-    PaginatedSoapResponse:
+    SearchSoapResponse:
       type: object
       properties:
         payload:
@@ -238,22 +222,8 @@ components:
           description: SOAP response object (JAXB)
         session:
           $ref: "#/components/schemas/SessionContext"
-        pagination:
-          $ref: "#/components/schemas/PaginationMetadata"
-    PaginationMetadata:
-      type: object
-      properties:
-        page:
+        resultCount:
           type: integer
-        size:
-          type: integer
-        returnedCount:
-          type: integer
-        hasNext:
-          type: boolean
-        nextCursor:
-          type: string
-          nullable: true
     SessionContext:
       type: object
       properties:
